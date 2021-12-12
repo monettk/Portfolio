@@ -3,7 +3,7 @@
 
 ## Introduction
 
-copied from: https://raw.githubusercontent.com/rstudio-education/datascience-box/master/course-materials/application-exercises/ae-01b-covid/covid.Rmd
+[Based on this tutorial](https://raw.githubusercontent.com/rstudio-education/datascience-box/master/course-materials/application-exercises/ae-01b-covid/covid.Rmd)
 
 
 ```{r load-packages, warning=FALSE, message=FALSE}
@@ -13,19 +13,25 @@ library(glue)
 library(scales)
 library(ggrepel)
 library(DT)
-covid <- read_csv("covid-new.csv")
-
 ```
+
+Load in the data.
+
+```{r}
+covid <- read_csv("covid-new.csv", show_col_types = FALSE)
+```
+
 
 ## Data prep
 
-```{r prep-state-data}
+Choose states of interest.
 
+```{r prep-state-data}
 states <- c(
   "NY",
   "FL",
-"CT",
-"MA",
+  "CT",
+  "MA",
   "NJ",
   "TX",
   "CA",
@@ -33,9 +39,11 @@ states <- c(
   "IL",
   "ID"
 )
+```
 
+Filter the data.
 
-
+```{r}
 state_data <- covid %>%
 # filter for deaths in states of interest
 filter(state %in% states) %>%
@@ -48,7 +56,11 @@ ungroup()
 
 #format submission_date to be of non-character type
 state_data$submission_date <- as.Date(state_data$submission_date,"%m/%d/%Y")
+```
 
+Plot the results.
+
+```{r}
 
 ggplot(data = state_data,
 mapping = aes(x = submission_date, y = new_death, color = state, label=state, group=state)) +
@@ -68,7 +80,4 @@ mapping = aes(x = submission_date, y = new_death, color = state, label=state, gr
     subtitle = "Date as of Sep 24, 2021",
     caption = "Source: data.cdc.gov/Case-Surveillance/United-States-COVID-19-Cases-and-Deaths-by-State-o/9mfq-cb36/data"
   )
-
-
-    
 ```

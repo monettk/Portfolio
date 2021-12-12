@@ -338,11 +338,6 @@ create_plot("Wendy's", num_itr, alpha)
 create_plot("Burger King", num_itr, alpha)
 ```
 
-### Chick-Fil-A
-
-```{r, results = 'asis'}
-create_plot("Chick-Fil-A", num_itr, alpha)
-```
 
 ### Domino's Pizza
 
