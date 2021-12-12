@@ -1,0 +1,65 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(glue)
+library(scales)
+library(ggrepel)
+library(DT)
+
+df1 <- read_csv("ma132.csv", col_types = cols(`Acad Org` = col_skip(), `Current Status` = col_skip(), `Course ID` = col_skip(), Term...7 = col_skip(), Instructor = col_skip(),'Title'=col_skip(),'Section'=col_skip()), skip = 1) %>%
+
+rename(Term=Term...8)
+class_data <- df1 %>%
+filter(Catalog %in% c(131,132),Component=="LEC") %>%
+select(Catalog,Term,`Tot Enrl`) %>%
+group_by(Catalog,Term) %>%
+summarise(Enroll = sum(`Tot Enrl`)) %>%
+ungroup()
+
+df2 <- class_data %>%
+filter(Term != "Summer") %>%
+separate(Term,c("Term","Year")) %>%
+select(Catalog,Term,Year,Enroll) %>%
+mutate(
+  calc1 = case_when(Catalog == 131 ~ c(Enroll)),
+  calc2 = case_when(Catalog == 132 ~ c(Enroll))
+) 
+
+df3 <- df2 %>%
+select(Term,Year,calc1,calc2) %>%
+mutate(Year = as.numeric(Year)) %>%
+mutate(Year = Year - 2000) %>%
+mutate(ay = case_when(Term == "Fall" ~str_c(Year, "-", Year + 1),
+Term == "Spring" ~str_c(Year - 1, "-", Year)))
+
+df4 <- df3 %>%
+  select(Term,ay,calc1,calc2) %>%
+  group_by(Term,ay) %>%
+  summarise_all(~first(na.omit(.))) %>%
+  ungroup()
+
+df5 <- df4 %>%
+  group_by(ay) %>%
+  mutate(
+    calc1f = case_when(Term == "Fall" ~ c(calc1)),
+    calc1s = case_when(Term == "Spring" ~ c(calc1)),
+    calc2f = case_when(Term == "Fall" ~ c(calc2)),
+    calc2s = case_when(Term == "Spring" ~ c(calc2))
+  ) %>%
+  ungroup()
+
+df6 <- df5 %>%
+  select(ay,calc1f,calc1s,calc2f,calc2s) %>%
+  group_by(ay) %>%
+  summarise_all(~first(na.omit(.))) %>%
+  ungroup()
+
+ggplot(df6, mapping=aes(x = calc1f, y = calc2s)) + geom_point() + geom_smooth(method='lm')
+
+
+```
