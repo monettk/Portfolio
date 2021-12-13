@@ -1,24 +1,27 @@
 ---
 title: "Predicting MA132 (Calculus II) Enrollment"
-author: Kyle Monette
-output: html_notebook
+author: "Kyle Monette"
+output:
+  html_document:
+    df_print: paged
 ---
 
 Can we predict spring enrollment for MA132 using the enrollment data for MA131 (Calculus I) from the prior semester?
 
-```{r}
+```{r, message=FALSE}
 library(tidyverse)
 library(lubridate)
 library(glue)
 library(scales)
 library(ggrepel)
 library(DT)
+library(here)
 ```
 
 Read in the data.
 
 ```{r}
-df1 <- read_csv("ma132.csv", col_types = cols(`Acad Org` = col_skip(), `Current Status` = col_skip(), `Course ID` = col_skip(), Term...7 = col_skip(), Instructor = col_skip(),'Title'=col_skip(),'Section'=col_skip()), skip = 1) %>%
+df1 <- read_csv(here("data", "ma132.csv"), col_types = cols(`Acad Org` = col_skip(), `Current Status` = col_skip(), `Course ID` = col_skip(), Term...7 = col_skip(), Instructor = col_skip(),'Title'=col_skip(),'Section'=col_skip()), skip = 1) %>%
   rename(Term=Term...8)
 ```
 

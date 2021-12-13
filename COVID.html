@@ -175,9 +175,10 @@ library(lubridate)
 library(glue)
 library(scales)
 library(ggrepel)
-library(DT)</code></pre>
+library(DT)
+library(here)</code></pre>
 <p>Load in the data.</p>
-<pre class="r"><code>covid &lt;- read_csv(&quot;covid-new.csv&quot;, show_col_types = FALSE)</code></pre>
+<pre class="r"><code>covid &lt;- read_csv(here(&quot;data&quot;, &quot;covid-new.csv&quot;), show_col_types = FALSE)</code></pre>
 </div>
 <div id="data-prep" class="section level2">
 <h2>Data prep</h2>

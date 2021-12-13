@@ -12,6 +12,7 @@ library(devtools)
 # to install dsbox, devtools::install_github("rstudio-education/dsbox")
 library(dsbox)
 library(kableExtra)
+library(here)
 ```
 
 The purpose of this project is to check the validity of the joke made by comedian [Mitch Hedberg](https://en.wikipedia.org/wiki/Mitch_Hedberg) when he said "La Quinta is Spanish for ‘next to Denny’s'". We approached this problem by first finding the average distance between a La Quinta and its nearest Denny’s by state (data courtesy of datascienceinabox.org).
@@ -19,8 +20,8 @@ The purpose of this project is to check the validity of the joke made by comedia
 To test the validity of this statement, we decided to see if Denny’s was closer to La Quinta’s on average then a given fast food restaurant. To do so we used sample data of a subset of 10000 fast food restaurants locations around the US along with data showing the locations of Denny’s and La Quinta’s.
 
 ```{r}
-states <- read_csv("states.csv", show_col_types = FALSE)
-rest <- read_csv("FastFoodRestaurants.csv", col_types = cols(address = col_skip(), keys = col_skip(), websites = col_skip()), show_col_types = FALSE) %>%
+states <- read_csv(here("data", "states.csv"), show_col_types = FALSE)
+rest <- read_csv(here("data", "FastFoodRestaurants.csv"), col_types = cols(address = col_skip(), keys = col_skip(), websites = col_skip()), show_col_types = FALSE) %>%
   rename(state = province)
 
 # create local copy of data sets from dsbox
